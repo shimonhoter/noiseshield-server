@@ -14,15 +14,18 @@ const server = app.listen(PORT, () => {
 
 const peerServer = ExpressPeerServer(server, {
   debug: true,
-  allow_discovery: true
+  allow_discovery: true,
+  generateClientId: () => {
+    return Math.random().toString(36).substring(2, 10);
+  }
 });
 
 app.use('/peerjs', peerServer);
 
 peerServer.on('connection', (client) => {
-  console.log('Connected:', client.getId());
+  console.log('Connected ID:', client.getId(), 'Time:', new Date().toISOString());
 });
 
 peerServer.on('disconnect', (client) => {
-  console.log('Disconnected:', client.getId());
+  console.log('Disconnected ID:', client.getId());
 });
