@@ -5,25 +5,24 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('NoiseShield Signaling Server — פעיל ✅');
+  res.send('NoiseShield Signaling Server פעיל ✅');
 });
 
 const server = app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server on port ${PORT}`);
 });
 
 const peerServer = ExpressPeerServer(server, {
   debug: true,
-  path: '/',
   allow_discovery: true
 });
 
 app.use('/peerjs', peerServer);
 
 peerServer.on('connection', (client) => {
-  console.log(`Peer connected: ${client.getId()}`);
+  console.log('Connected:', client.getId());
 });
 
 peerServer.on('disconnect', (client) => {
-  console.log(`Peer disconnected: ${client.getId()}`);
+  console.log('Disconnected:', client.getId());
 });
